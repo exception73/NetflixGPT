@@ -1,9 +1,10 @@
+import Body from "./componets/Body";
+
 
 function App() {
   return (
     <div className="">
-     
-      <p className='text-xl text-fuchsia-900 bg-slate-200 font-bold '>gautam khatri</p>
+      <Body />  
         
     </div>
   );
