@@ -1,12 +1,17 @@
 import { useRef, useState } from 'react';
 import Header from "./Header";
 import { checkValidateData } from '../utils/validate.js';
-import {  createUserWithEmailAndPassword,  signInWithEmailAndPassword } from "firebase/auth";
+import {  createUserWithEmailAndPassword,  signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import {auth} from '../utils/firebase.js';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice.js';
 
 
 const Login = () => {
 
+   const navigate = useNavigate();
+   const dispatch = useDispatch();
     const [isSignInForm, setIsSignInForm] = useState(true);
 
 
@@ -47,12 +52,30 @@ const Login = () => {
             // Signed up 
             const user = userCredential.user;
             console.log(user)
+
+            updateProfile(user, {
+              displayName : name?.current?.value,
+              photoURL : "https://avatars.githubusercontent.com/u/109818831?v=4"
+            })
+            .then(() => {
+              const {uid, email, displayName, photoURL} = user;
+              dispatch(
+                addUser({
+                  uid,
+                  email,
+                  displayName,
+                  photoURL
+                })
+              )
+            })
+
+            navigate("/browse");
             // ...
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            setErrorMessage(errorMessage);
+            setErrorMessage(errorMessage);  
 
             console.log(errorMessage);
             // ..
@@ -68,6 +91,9 @@ const Login = () => {
             // Signed in 
             const user = userCredential.user;
             console.log(user);
+            navigate("/browse");
+             
+
             // ...
           })
           .catch((error) => {
