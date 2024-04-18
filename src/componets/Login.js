@@ -6,6 +6,7 @@ import {auth} from '../utils/firebase.js';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice.js';
+import { USER_AVATAR } from '../utils/constants.js';
 
 
 const Login = () => {
@@ -55,7 +56,7 @@ const Login = () => {
 
             updateProfile(user, {
               displayName : name?.current?.value,
-              photoURL : "https://avatars.githubusercontent.com/u/109818831?v=4"
+              photoURL : USER_AVATAR
             })
             .then(() => {
               const {uid, email, displayName, photoURL} = user;
